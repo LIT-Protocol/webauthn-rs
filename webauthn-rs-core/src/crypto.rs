@@ -779,7 +779,8 @@ impl COSEKey {
         }
     }
 
-    pub(crate) fn verify_signature(
+    #[doc = "This is unsafe to use and is only exposed temporarily for demo purposes."]
+    pub fn verify_signature(
         &self,
         signature: &[u8],
         verification_data: &[u8],
