@@ -44,12 +44,13 @@ pub struct RegistrationState {
 /// The in progress state of an authentication attempt. You must persist this associated to the UserID
 /// requesting the registration.
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(missing_docs)]
 pub struct AuthenticationState {
-    pub(crate) credentials: Vec<Credential>,
-    pub(crate) policy: UserVerificationPolicy,
-    pub(crate) challenge: Base64UrlSafeData,
-    pub(crate) appid: Option<String>,
-    pub(crate) allow_backup_eligible_upgrade: bool,
+    pub credentials: Vec<Credential>,
+    pub policy: UserVerificationPolicy,
+    pub challenge: Base64UrlSafeData,
+    pub appid: Option<String>,
+    pub allow_backup_eligible_upgrade: bool,
 }
 
 impl AuthenticationState {
