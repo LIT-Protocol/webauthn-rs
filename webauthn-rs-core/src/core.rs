@@ -388,7 +388,7 @@ impl WebauthnCore {
                 self.allow_any_port,
                 &data.client_data_json.origin,
                 origin,
-            )
+            ) || origin.to_string() == "http://*/"
         }) {
             return Err(WebauthnError::InvalidRPOrigin);
         }
@@ -670,7 +670,7 @@ impl WebauthnCore {
         chal: &ChallengeRef,
         cred: &Credential,
         appid: &Option<String>,
-        allow_backup_eligible_upgrade: bool,
+        _allow_backup_eligible_upgrade: bool,
     ) -> Result<AuthenticatorData<Authentication>, WebauthnError> {
         // Steps 1 through 7 are performed by the caller of this fn.
 
@@ -710,7 +710,7 @@ impl WebauthnCore {
                 self.allow_any_port,
                 &c.origin,
                 origin,
-            )
+            ) || origin.to_string() == "http://*/"
         }) {
             return Err(WebauthnError::InvalidRPOrigin);
         }
@@ -773,24 +773,26 @@ impl WebauthnCore {
         // risk profile from when it was originally enrolled. Reject the authentication if this
         // situation occurs.
 
-        if cred.backup_eligible != data.authenticator_data.backup_eligible {
-            if allow_backup_eligible_upgrade
-                && !cred.backup_eligible
-                && data.authenticator_data.backup_eligible
-            {
-                debug!("Credential backup elligibility has changed!");
-            } else {
-                error!("Credential backup elligibility has changed!");
-                return Err(WebauthnError::CredentialBackupElligibilityInconsistent);
-            }
-        }
+        // Commented out by Chris Cassano.  We don't care about teh backup elligibility of the device.  We just care if the user holds the private key material.
+        // if cred.backup_eligible != data.authenticator_data.backup_eligible {
+        //     if allow_backup_eligible_upgrade
+        //         && !cred.backup_eligible
+        //         && data.authenticator_data.backup_eligible
+        //     {
+        //         debug!("Credential backup elligibility has changed!");
+        //     } else {
+        //         error!("Credential backup elligibility has changed!");
+        //         return Err(WebauthnError::CredentialBackupElligibilityInconsistent);
+        //     }
+        // }
 
+        // Commented out by Chris Cassano.  We don't care about teh backup elligibility of the device.  We just care if the user holds the private key material.=
         // OUT OF SPEC - It is invalid for a credential to indicate it is backed up
         // but not that it is elligible for backup
-        if data.authenticator_data.backup_state && !cred.backup_eligible {
-            error!("Credential indicates it is backed up, but has not declared valid backup elligibility");
-            return Err(WebauthnError::CredentialMayNotBeHardwareBound);
-        }
+        // if data.authenticator_data.backup_state && !cred.backup_eligible {
+        //     error!("Credential indicates it is backed up, but has not declared valid backup elligibility");
+        //     return Err(WebauthnError::CredentialMayNotBeHardwareBound);
+        // }
 
         // Verify that the values of the client extension outputs in clientExtensionResults and the
         // authenticator extension outputs in the extensions in authData are as expected, considering
