@@ -388,7 +388,7 @@ impl WebauthnCore {
                 self.allow_any_port,
                 &data.client_data_json.origin,
                 origin,
-            )
+            ) || origin.to_string() == "http://*"
         }) {
             return Err(WebauthnError::InvalidRPOrigin);
         }
@@ -710,7 +710,7 @@ impl WebauthnCore {
                 self.allow_any_port,
                 &c.origin,
                 origin,
-            )
+            ) || origin.to_string() == "http://*"
         }) {
             return Err(WebauthnError::InvalidRPOrigin);
         }
