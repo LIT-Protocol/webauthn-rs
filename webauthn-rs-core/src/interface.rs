@@ -30,15 +30,16 @@ pub type Counter = u32;
 /// side location associated to the active session requesting the registration. This contains the
 /// user unique id which you can use to reference the user requesting the registration.
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(missing_docs)]
 pub struct RegistrationState {
-    pub(crate) policy: UserVerificationPolicy,
-    pub(crate) exclude_credentials: Vec<CredentialID>,
-    pub(crate) challenge: Base64UrlSafeData,
-    pub(crate) credential_algorithms: Vec<COSEAlgorithm>,
-    pub(crate) require_resident_key: bool,
-    pub(crate) authenticator_attachment: Option<AuthenticatorAttachment>,
-    pub(crate) extensions: RequestRegistrationExtensions,
-    pub(crate) experimental_allow_passkeys: bool,
+    pub policy: UserVerificationPolicy,
+    pub exclude_credentials: Vec<CredentialID>,
+    pub challenge: Base64UrlSafeData,
+    pub credential_algorithms: Vec<COSEAlgorithm>,
+    pub require_resident_key: bool,
+    pub authenticator_attachment: Option<AuthenticatorAttachment>,
+    pub extensions: RequestRegistrationExtensions,
+    pub experimental_allow_passkeys: bool,
 }
 
 /// The in progress state of an authentication attempt. You must persist this associated to the UserID
